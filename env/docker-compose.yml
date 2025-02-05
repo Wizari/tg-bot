@@ -1,0 +1,56 @@
+version: '3.5'
+
+services:
+
+  gpt-db:
+    image: postgres:15
+    volumes:
+      - ./data/postgres_gpt_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: tgbotdb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432"
+
+
+#  db:
+#    image: postgres
+#    restart: always
+#    environment:
+#      POSTGRES_USER: exampleuser
+#      POSTGRES_PASSWORD: examplepassword
+#      POSTGRES_DB: exampledb
+#    volumes:
+#      - ./data:/var/lib/postgresql/data
+#    ports:
+#      - "5432:5432"
+#
+#volumes:
+#  postgres_data:
+
+
+#version: '3.5'
+#
+#
+#services:
+#
+#  postgres-db:
+#    image: postgres:15
+#    volumes:
+#      - ./data/postgres_data:/var/lib/postgresql/data
+#      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+#    environment:
+#      POSTGRES_USER: develop
+#      POSTGRES_PASSWORD: password
+#    command: postgres -c 'max_connections=1000' -c shared_preload_libraries=pg_stat_statements -c pg_stat_statements.track=all
+#    ports:
+#      - "5432:5432"
+##    networks:
+##      - localnet
+##
+##networks:
+##  localnet:
+##    name: my_network
+##    external: true
+
