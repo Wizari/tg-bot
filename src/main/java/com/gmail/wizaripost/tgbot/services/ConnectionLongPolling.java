@@ -13,12 +13,18 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @PropertySource("classpath:secrets.properties")
 public class ConnectionLongPolling extends TelegramLongPollingBot {
 
+
+    private final MainMessageController mainMessageController;
     @Value("${telegram.botName}")
     private String botUsername;
 
     @Autowired
-    public ConnectionLongPolling(@Value("${telegram.token}") String botToken) {
+    public ConnectionLongPolling(@Value("${telegram.token}") String botToken,
+                                 MainMessageController mainMessageController
+                                 ) {
+
         super(botToken);
+        this.mainMessageController = mainMessageController;
     }
 
     @Override
@@ -26,15 +32,18 @@ public class ConnectionLongPolling extends TelegramLongPollingBot {
         System.out.println("Получено обновление1: " + update);
         if (update.hasMessage() && update.getMessage().hasText()) {
             System.out.println("Получено сообщение2: " + update.getMessage().getText());
-            String messageText = update.getMessage().getText();
-            long chatId = update.getMessage().getChatId();
+//            String messageText = update.getMessage().getText();
+//            long chatId = update.getMessage().getChatId();
+//
+//            SendMessage message = new SendMessage();
+//            message.setChatId(String.valueOf(chatId));
+//            message.setText("Вы сказали: " + messageText);
 
-            SendMessage message = new SendMessage();
-            message.setChatId(String.valueOf(chatId));
-            message.setText("Вы сказали: " + messageText);
+//            mainMessageController
 
             try {
-                execute(message);
+                execute(mainMessageController.getReply(update));
+//                execute(message);
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
