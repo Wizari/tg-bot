@@ -29,21 +29,11 @@ public class ConnectionLongPolling extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        System.out.println("Получено обновление1: " + update);
+//        System.out.println("Получено обновление1: " + update);
         if (update.hasMessage() && update.getMessage().hasText()) {
-            System.out.println("Получено сообщение2: " + update.getMessage().getText());
-//            String messageText = update.getMessage().getText();
-//            long chatId = update.getMessage().getChatId();
-//
-//            SendMessage message = new SendMessage();
-//            message.setChatId(String.valueOf(chatId));
-//            message.setText("Вы сказали: " + messageText);
-
-//            mainMessageController
-
+//            System.out.println("Получено сообщение2: " + update.getMessage().getText());
             try {
                 execute(mainMessageController.getReply(update));
-//                execute(message);
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }

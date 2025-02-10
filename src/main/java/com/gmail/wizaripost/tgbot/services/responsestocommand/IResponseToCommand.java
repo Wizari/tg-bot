@@ -14,7 +14,7 @@ public interface IResponseToCommand {
         return false;
     }
     //для кнопок
-    default String chatState() {
+    default String getChatState() {
         return "IDLE";
     }
 }

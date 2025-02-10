@@ -1,11 +1,16 @@
 package com.gmail.wizaripost.tgbot.services;
 
+import com.gmail.wizaripost.tgbot.model.ChatState;
+import com.gmail.wizaripost.tgbot.services.buttons.AbstractButtons;
 import com.gmail.wizaripost.tgbot.services.responsestocommand.IResponseToCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -14,7 +19,11 @@ public class MainMessageController {
 
     @Autowired
     private Set<IResponseToCommand> responseToCommands;
+    @Autowired
+    private Set<AbstractButtons> buttons;
     private final TelegramSynchronizedService telegramSynchronizedService;
+    private static final Map<Long, ChatState> CHATS = new HashMap<>();
+
 
     public MainMessageController(
             TelegramSynchronizedService telegramSynchronizedService
@@ -29,6 +38,11 @@ public class MainMessageController {
             var chatId = update.getMessage().getChatId();
             var messageText = update.getMessage().getText();
 
+            CHATS.putIfAbsent(chatId, ChatState.IDLE);
+            ChatState currentChat = CHATS.get(chatId);
+            //todo
+
+
             SendMessage responseMessage = new SendMessage();
             responseMessage.setChatId(String.valueOf(chatId));
 
@@ -36,8 +50,12 @@ public class MainMessageController {
                 if (mes.getTeg().equals(messageText)) {
                     responseMessage.setText(mes.generate(update));
                     //todo добавить кнопки(setReplyMarkup)
-//                    responseMessage.enableMarkdown(true);
-//                    responseMessage.setReplyMarkup();
+                    responseMessage.enableMarkdown(true);
+                    for (AbstractButtons button : this.buttons) {
+                        if (button.getTeg().equals(mes.getChatState())) {
+                            responseMessage.setReplyMarkup(button.generate());
+                        }
+                    }
 
                     return responseMessage;
                 }

@@ -5,14 +5,14 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 //todo test. можно удалить
 @Service
-public class ResponseToCommandShowAllExpensesImpl implements IResponseToCommand {
+public class ResponseToCommandHelloImpl implements IResponseToCommand {
     @Override
     public String generate(Update update) {
-        return "test \"Показать все траты\"";
+        return "test \"Hello World\"";
     }
 
     @Override
     public String getTeg() {
-        return "Показать все траты";
+        return "Hello";
     }
 }
