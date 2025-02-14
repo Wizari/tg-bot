@@ -1,5 +1,6 @@
 package com.gmail.wizaripost.tgbot.services.buttons;
 
+import com.gmail.wizaripost.tgbot.model.ChatState;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 
@@ -7,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class IButtonsIDLEImpl extends AbstractButtons {
+public class ButtonsIDLEImpl extends AbstractButtons {
     @Override
     public ReplyKeyboardMarkup generate() {
         // Создаем клавиатуру
@@ -20,8 +21,8 @@ public class IButtonsIDLEImpl extends AbstractButtons {
     }
 
     @Override
-    public String getTeg() {
-        return "IDLE";
+    public ChatState getTeg() {
+        return ChatState.IDLE;
     }
 
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 
 import java.util.HashMap;
@@ -49,14 +50,14 @@ public class MainMessageController {
             for (IResponseToCommand mes : this.responseToCommands) {
                 if (mes.getTeg().equals(messageText)) {
                     responseMessage.setText(mes.generate(update));
+                    currentChat = mes.getChatState();
                     //todo добавить кнопки(setReplyMarkup)
-                    responseMessage.enableMarkdown(true);
                     for (AbstractButtons button : this.buttons) {
-                        if (button.getTeg().equals(mes.getChatState())) {
+                        if (button.getTeg().toString().equals(mes.getChatState().toString())) {
+                            responseMessage.enableMarkdown(true);
                             responseMessage.setReplyMarkup(button.generate());
                         }
                     }
-
                     return responseMessage;
                 }
             }

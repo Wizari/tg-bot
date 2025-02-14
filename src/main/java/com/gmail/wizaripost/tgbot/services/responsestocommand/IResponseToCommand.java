@@ -1,5 +1,6 @@
 package com.gmail.wizaripost.tgbot.services.responsestocommand;
 
+import com.gmail.wizaripost.tgbot.model.ChatState;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
@@ -14,7 +15,7 @@ public interface IResponseToCommand {
         return false;
     }
     //для кнопок
-    default String getChatState() {
-        return "IDLE";
+    default ChatState getChatState() {
+        return ChatState.IDLE;
     }
 }
