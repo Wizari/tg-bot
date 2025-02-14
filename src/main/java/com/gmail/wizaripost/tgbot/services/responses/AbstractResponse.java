@@ -1,7 +1,10 @@
-package com.gmail.wizaripost.tgbot.services.buttons;
+package com.gmail.wizaripost.tgbot.services.responses;
 
 import com.gmail.wizaripost.tgbot.model.ChatState;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
@@ -10,13 +13,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public abstract class AbstractButtons {
-    public abstract ReplyKeyboard generate();
+public abstract class AbstractResponse {
+    public abstract BotApiMethod generateSendMessage(Update update);
 
-    public abstract ChatState getTeg();
+    public abstract String getTeg();
 
-    protected ReplyKeyboardMarkup assembleButtons(List<List<String>> buttons) {
+    protected ReplyKeyboardMarkup assembleReplyKeyboardMarkup(List<List<String>> buttons) {
         ReplyKeyboardMarkup markup = new ReplyKeyboardMarkup();
+//        markup.setOneTimeKeyboard(true);
         markup.setKeyboard(
                 buttons.stream()
                         .map(rowButtons -> {
