@@ -1,32 +1,26 @@
 package com.gmail.wizaripost.tgbot.services;
 
-import com.gmail.wizaripost.tgbot.model.ChatState;
-import com.gmail.wizaripost.tgbot.services.buttons.AbstractButtons;
 import com.gmail.wizaripost.tgbot.services.responses.AbstractResponse;
-import com.gmail.wizaripost.tgbot.services.responses.IResponseToCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethodMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 
 @Service
 public class MainMessageController {
 
-//    @Autowired
+    //    @Autowired
 //    private Set<IResponseToCommand> responseToCommands;
 //    @Autowired
 //    private Set<AbstractButtons> buttons;
     @Autowired
     private Set<AbstractResponse> response;
     private final TelegramSynchronizedService telegramSynchronizedService;
-    private static final Map<Long, ChatState> CHATS = new HashMap<>();
+//    private static final Map<Long, ChatState> CHATS = new HashMap<>();
 
 
     public MainMessageController(
@@ -35,7 +29,7 @@ public class MainMessageController {
         this.telegramSynchronizedService = telegramSynchronizedService;
     }
 
-//    public SendMessage getReply(Update update) {
+    //    public SendMessage getReply(Update update) {
     public BotApiMethod getReply(Update update) {
         synchronized (telegramSynchronizedService.getMessageLock(update.getMessage().getFrom().getId())) {
             for (AbstractResponse res : this.response) {
@@ -56,9 +50,6 @@ public class MainMessageController {
             responseMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
             responseMessage.setText("Incorrect command");
             return responseMessage;
-
-
-
 
 
             //            var message = update.getMessage();

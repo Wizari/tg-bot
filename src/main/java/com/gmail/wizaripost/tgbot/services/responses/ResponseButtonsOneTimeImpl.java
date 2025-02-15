@@ -13,8 +13,8 @@ public class ResponseButtonsOneTimeImpl extends AbstractResponse {
     @Override
     public SendMessage generateSendMessage(Update update) {
         List<List<String>> buttons = new ArrayList<>();
-        buttons.add(List.of("/start"));
-        buttons.add(List.of("Hello"));
+        buttons.add(List.of("1"));
+        buttons.add(List.of("2"));
 
         SendMessage responseMessage = new SendMessage();
         responseMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
@@ -31,6 +31,6 @@ public class ResponseButtonsOneTimeImpl extends AbstractResponse {
 
     @Override
     public String getTeg() {
-        return "one";
+        return "/one";
     }
 }
