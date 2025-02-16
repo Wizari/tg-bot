@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import com.vdurmont.emoji.EmojiParser;
+
 
 @Service
 public class ResponseWeatherImpl extends AbstractResponse {
@@ -21,7 +23,8 @@ public class ResponseWeatherImpl extends AbstractResponse {
         SendMessage responseMessage = new SendMessage();
         responseMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
         responseMessage.setText(" "
-                + weatherResponse.getCurrent().getTemperature_2m());
+                + weatherResponse.getCurrent().getTemperature_2m()
+        + EmojiParser.parseToUnicode(":smile:"));
 
 
         return responseMessage;
