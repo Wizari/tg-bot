@@ -1,5 +1,6 @@
 package com.gmail.wizaripost.tgbot.services;
 
+import com.gmail.wizaripost.tgbot.model.ResponseEntity;
 import com.gmail.wizaripost.tgbot.services.responses.ResponsePaginationKeyboardImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,7 +37,12 @@ public class ConnectionLongPolling extends TelegramLongPollingBot {
         if (update.hasMessage() && update.getMessage().hasText()) {
 //            System.out.println("Получено сообщение2: " + update.getMessage().getText());
             try {
-                execute(mainMessageController.getReply(update).getResponse());
+                ResponseEntity responseEntity = mainMessageController.getReply(update);
+                if (responseEntity.isDeleteMessage()) {
+                    this.deleteMessage(update.getMessage().getChatId(),
+                            update.getMessage().getMessageId());
+                }
+                execute(responseEntity.getResponse());
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }

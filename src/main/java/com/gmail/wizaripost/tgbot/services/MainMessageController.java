@@ -28,70 +28,32 @@ public class MainMessageController {
         this.telegramSynchronizedService = telegramSynchronizedService;
     }
 
-    //    public SendMessage getReply(Update update) {
     public ResponseEntity getReply(Update update) {
         synchronized (telegramSynchronizedService.getMessageLock(update.getMessage().getFrom().getId())) {
-//            System.out.println(update.getMessage().toString());
-//            System.out.println(update.getMessage().getText());
+            System.out.println(update.getMessage().toString());
+            System.out.println(update.getMessage().getText());
 
-//            String string = update.getMessage().getText();
-            HashMap<Object, Object> map = new HashMap<>();
-            Long chatId;
-            Integer userId;
-            Update update1 = null;
-            Integer i;
-            if (map.isEmpty()) {
-                System.out.println("map.isEmpty()");
-                map.putIfAbsent(1, 1);
-                chatId = update.getMessage().getChatId();
-                userId = update.getMessage().getMessageId();
-                update1 = update;
-                Test1 test1 = new Test1();
-                test1.generateSendMessage(update);
+            for (AbstractResponse res : this.response) {
+                if (res.getTeg().equals(update.getMessage().getText())) {
+                    return res.generateSendMessage(update);
+                }
+            }
+//emoji
+            if (EmojiManager.containsEmoji(update.getMessage().getText())) {
                 for (AbstractResponse res : this.response) {
-                    if (res.getTeg().equals("/test1")) {
+                    if (res.getTeg().equals("emoji")) {
                         return res.generateSendMessage(update);
                     }
                 }
             }
 
-                for (AbstractResponse res : this.response) {
-                    if (res.getTeg().equals("/test2")) {
-                        map.clear();
-                        System.out.println("map.clear()");
 
-                        return res.generateSendMessage(update1);
-                    }
+//Error: Incorrect command
+            for (AbstractResponse res : this.response) {
+                if (res.getTeg().equals("error")) {
+                    return res.generateSendMessage(update);
                 }
-
-
-
-
-
-
-
-
-//            for (AbstractResponse res : this.response) {
-//                if (res.getTeg().equals(update.getMessage().getText())) {
-//                    return res.generateSendMessage(update);
-//                }
-//            }
-////emoji
-//            if (EmojiManager.containsEmoji(update.getMessage().getText())) {
-//                for (AbstractResponse res : this.response) {
-//                    if (res.getTeg().equals("emoji")) {
-//                        return res.generateSendMessage(update);
-//                    }
-//                }
-//            }
-//
-//
-////Error: Incorrect command
-//            for (AbstractResponse res : this.response) {
-//                if (res.getTeg().equals("error")) {
-//                    return res.generateSendMessage(update);
-//                }
-//            }
+            }
 //Error: Incorrect command
             SendMessage responseMessage = new SendMessage();
             responseMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
