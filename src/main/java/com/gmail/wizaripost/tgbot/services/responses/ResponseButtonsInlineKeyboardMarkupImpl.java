@@ -35,7 +35,8 @@ public class ResponseButtonsInlineKeyboardMarkupImpl extends AbstractResponse {
 
     @Override
     public String getTeg() {
-        return "InlineKeyboardMarkup";
+//        return "InlineKeyboardMarkup";
+        return "/test1";
     }
 
     public InlineKeyboardMarkup createInlineKeyboard(List<List<String>> buttons) {
@@ -50,7 +51,8 @@ public class ResponseButtonsInlineKeyboardMarkupImpl extends AbstractResponse {
                 // Создаем кнопку
                 InlineKeyboardButton button = new InlineKeyboardButton(buttonText);
                 // Устанавливаем callbackData (например, текст кнопки)
-                button.setCallbackData(buttonText);
+//                button.setCallbackData(buttonText);
+                button.setCallbackData("page_"+buttonText);
                 // Добавляем кнопку в ряд
                 buttonRow.add(button);
             }

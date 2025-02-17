@@ -9,13 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ResponseButtonsTwoImpl extends AbstractResponse {
+public class Test1 extends AbstractResponse {
     @Override
     public ResponseEntity generateSendMessage(Update update) {
         List<List<String>> buttons = new ArrayList<>();
         buttons.add(List.of("/start", "когда ты обновлялась?", "когда ты обновлялась?"));
         buttons.add(List.of("/r User1", "Hello"));
-        buttons.add(List.of("Two", "/test1"));
+        buttons.add(List.of("/one", "/weather"));
         buttons.add(List.of("<", "1", "2", "3", ">"));
 
         SendMessage responseMessage = new SendMessage();
@@ -24,6 +24,7 @@ public class ResponseButtonsTwoImpl extends AbstractResponse {
         responseMessage.setReplyMarkup(this.assembleReplyKeyboardMarkup(buttons));
 
         responseMessage.setText("Hello!");
+
 
         ResponseEntity response = new ResponseEntity();
         response.setResponse(responseMessage);
@@ -34,6 +35,6 @@ public class ResponseButtonsTwoImpl extends AbstractResponse {
 
     @Override
     public String getTeg() {
-        return "2";
+        return "Test1";
     }
 }
