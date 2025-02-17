@@ -1,5 +1,6 @@
 package com.gmail.wizaripost.tgbot.services.responses;
 
+import com.gmail.wizaripost.tgbot.model.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -7,11 +8,13 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @Service
 public class ResponseErrorImpl extends AbstractResponse {
     @Override
-    public SendMessage generateSendMessage(Update update) {
+    public ResponseEntity generateSendMessage(Update update) {
         SendMessage responseMessage = new SendMessage();
         responseMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
         responseMessage.setText("Error: Incorrect command!");
-        return responseMessage;
+        ResponseEntity response = new ResponseEntity();
+        response.setResponse(responseMessage);
+        return response;
     }
 
     @Override

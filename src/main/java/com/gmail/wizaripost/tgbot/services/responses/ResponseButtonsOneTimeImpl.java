@@ -1,5 +1,6 @@
 package com.gmail.wizaripost.tgbot.services.responses;
 
+import com.gmail.wizaripost.tgbot.model.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -11,7 +12,7 @@ import java.util.List;
 @Service
 public class ResponseButtonsOneTimeImpl extends AbstractResponse {
     @Override
-    public SendMessage generateSendMessage(Update update) {
+    public ResponseEntity generateSendMessage(Update update) {
         List<List<String>> buttons = new ArrayList<>();
         buttons.add(List.of("1"));
         buttons.add(List.of("2"));
@@ -25,7 +26,9 @@ public class ResponseButtonsOneTimeImpl extends AbstractResponse {
 
         responseMessage.setText("Hello!");
 
-        return responseMessage;
+        ResponseEntity response = new ResponseEntity();
+        response.setResponse(responseMessage);
+        return response;
     }
 
 

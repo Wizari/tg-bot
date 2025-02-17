@@ -1,5 +1,6 @@
 package com.gmail.wizaripost.tgbot.services.responses;
 
+import com.gmail.wizaripost.tgbot.model.ResponseEntity;
 import com.gmail.wizaripost.tgbot.model.WeatherResponse;
 import com.gmail.wizaripost.tgbot.services.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class ResponseWeatherImpl extends AbstractResponse {
     private WeatherService weatherService;
 
     @Override
-    public SendMessage generateSendMessage(Update update) {
+    public ResponseEntity generateSendMessage(Update update) {
         WeatherResponse weatherResponse = weatherService.getWeather(60.01, 30.27);
 
 
@@ -27,7 +28,9 @@ public class ResponseWeatherImpl extends AbstractResponse {
         + EmojiParser.parseToUnicode(":smile:"));
 
 
-        return responseMessage;
+        ResponseEntity response = new ResponseEntity();
+        response.setResponse(responseMessage);
+        return response;
     }
 
     @Override

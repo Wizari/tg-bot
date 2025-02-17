@@ -3,27 +3,41 @@ package com.gmail.wizaripost.tgbot.services.responses;
 import com.gmail.wizaripost.tgbot.model.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class ResponseButtonsInlineKeyboardMarkupImpl extends AbstractResponse {
+public class ResponseButtonsTestImpl extends AbstractResponse {
     @Override
     public ResponseEntity generateSendMessage(Update update) {
+//        InlineKeyboardButton button = new InlineKeyboardButton("1");
+//        // Устанавливаем callbackData (например, текст кнопки)
+//        button.setCallbackData("Hello!");
+
+
         List<List<String>> buttons = new ArrayList<>();
-        buttons.add(List.of("/start", "когда ты обновлялась?", "когда ты обновлялась?"));
-        buttons.add(List.of("/r User1", "Hello"));
-        buttons.add(List.of("One", "Привет"));
-        buttons.add(List.of("<", "1", "2", "3", ">"));
+        buttons.add(List.of("1"));
+        buttons.add(List.of("2"));
 
         SendMessage responseMessage = new SendMessage();
         responseMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
-//        responseMessage.enableMarkdown(true);
-        responseMessage.setReplyMarkup(createInlineKeyboard(buttons));
+        responseMessage.enableMarkdown(true);
+
+
+//        ReplyKeyboardMarkup markup = this.createInlineKeyboard(buttons);
+//        markup.setOneTimeKeyboard(true);
+//        ReplyKeyboardMarkup markup = new ReplyKeyboardMarkup();
+//        markup.setKeyboard(button);
+//        responseMessage.setReplyMarkup(button);
+
 
         responseMessage.setText("Hello!");
 
@@ -33,10 +47,12 @@ public class ResponseButtonsInlineKeyboardMarkupImpl extends AbstractResponse {
     }
 
 
-    @Override
-    public String getTeg() {
-        return "InlineKeyboardMarkup";
-    }
+//    public void deleteMessage(Long chatId, Integer messageId) {
+//        DeleteMessage deleteMessage = new DeleteMessage();
+//        deleteMessage.setChatId(chatId.toString());
+//        deleteMessage.setMessageId(messageId);
+//        execute(deleteMessage);
+//    }
 
     public InlineKeyboardMarkup createInlineKeyboard(List<List<String>> buttons) {
         // Создаем список для рядов кнопок
@@ -62,5 +78,11 @@ public class ResponseButtonsInlineKeyboardMarkupImpl extends AbstractResponse {
         markup.setKeyboard(keyboard);
 
         return markup;
+    }
+
+
+    @Override
+    public String getTeg() {
+        return "/test1";
     }
 }

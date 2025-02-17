@@ -1,5 +1,6 @@
 package com.gmail.wizaripost.tgbot.services.responses;
 
+import com.gmail.wizaripost.tgbot.model.ResponseEntity;
 import com.vdurmont.emoji.Emoji;
 import com.vdurmont.emoji.EmojiManager;
 import com.vdurmont.emoji.EmojiParser;
@@ -13,7 +14,7 @@ import java.util.List;
 @Service
 public class ResponseEmojiParserImpl extends AbstractResponse {
     @Override
-    public BotApiMethod generateSendMessage(Update update) {
+    public ResponseEntity generateSendMessage(Update update) {
         List<String> emojiContainsInText =
                 EmojiParser.extractEmojis(update.getMessage().getText());
         StringBuilder result = new StringBuilder();
@@ -34,7 +35,9 @@ public class ResponseEmojiParserImpl extends AbstractResponse {
         SendMessage responseMessage = new SendMessage();
         responseMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
         responseMessage.setText("Emoji: \n"+ result);
-        return responseMessage;
+        ResponseEntity response = new ResponseEntity();
+        response.setResponse(responseMessage);
+        return response;
     }
 
     @Override

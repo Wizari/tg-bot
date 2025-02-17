@@ -1,5 +1,6 @@
 package com.gmail.wizaripost.tgbot.services.responses;
 
+import com.gmail.wizaripost.tgbot.model.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -11,7 +12,8 @@ import java.util.stream.Collectors;
 
 @Component
 public abstract class AbstractResponse {
-    public abstract BotApiMethod generateSendMessage(Update update);
+
+    public abstract ResponseEntity generateSendMessage(Update update);
 
     public abstract String getTeg();
 
