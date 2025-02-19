@@ -1,14 +1,12 @@
 package com.gmail.wizaripost.tgbot.services;
 
 import com.gmail.wizaripost.tgbot.model.ResponseEntity;
-import com.gmail.wizaripost.tgbot.services.responses.ResponsePaginationKeyboardImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -36,8 +34,10 @@ public class ConnectionLongPolling extends TelegramLongPollingBot {
 //        System.out.println("Получено обновление1: " + update);
         if (update.hasMessage() && update.getMessage().hasText()) {
 //            System.out.println("Получено сообщение2: " + update.getMessage().getText());
+            System.out.println("Получено сообщение2: " + update.getMessage().getChatId());
             try {
-                ResponseEntity responseEntity = mainMessageController.getReply(update);
+                ResponseEntity responseEntity = mainMessageController.getReply(update,
+                        update.getMessage().getText());
                 if (responseEntity.isDeleteMessage()) {
                     this.deleteMessage(update.getMessage().getChatId(),
                             update.getMessage().getMessageId());
@@ -46,18 +46,15 @@ public class ConnectionLongPolling extends TelegramLongPollingBot {
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
-//            if (mainMessageController.getReply(update).isDeleteMessage()) {
-//                try {
-//                    deleteMessage(update.getMessage().getChatId(),
-//                            update.getMessage().getMessageId());
-//                } catch (TelegramApiException e) {
-//                    throw new RuntimeException(e);
-//                }
-//            }
+        }
+        if (update.hasCallbackQuery()) {
+            System.out.println("callback: " + update.getCallbackQuery().getData());
+            System.out.println("callback: " + update);
+            System.out.println("callback: " + update.getCallbackQuery().getMessage().getChatId().toString());
+//            CreatePaginationKeyboard keyboard = new CreatePaginationKeyboard();
+//            InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.create()
 
 
-            if (update.hasCallbackQuery()) {
-                System.out.println("callback" + update.getCallbackQuery().getData());
 //                String callbackData = update.getCallbackQuery().getData();
 //                if (callbackData.startsWith("page_")) {
 //                    int page = Integer.parseInt(callbackData.split("_")[1]);
@@ -69,18 +66,18 @@ public class ConnectionLongPolling extends TelegramLongPollingBot {
 //                    editMessage.setMessageId(update.getCallbackQuery().getMessage().getMessageId());
 //                    editMessage.setText("Страница " + page + " из " + totalPages);
 //                    ResponsePaginationKeyboardImpl responsePaginationKeyboard = new ResponsePaginationKeyboardImpl();
-//                    editMessage.setReplyMarkup(responsePaginationKeyboard.createPaginationKeyboard(page, totalPages));
-//
-//                    try {
-//                        execute(editMessage);
-//                    } catch (TelegramApiException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
+////                    editMessage.setReplyMarkup(responsePaginationKeyboard.createPaginationKeyboard(page, totalPages));
+
+            try {
+                ResponseEntity responseEntity = mainMessageController.getReply(update,
+                        update.getCallbackQuery().getData());
+                execute(responseEntity.getResponse());
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
             }
         }
-
     }
+
 
     @Override
     public String getBotUsername() {

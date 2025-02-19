@@ -28,18 +28,22 @@ public class MainMessageController {
         this.telegramSynchronizedService = telegramSynchronizedService;
     }
 
-    public ResponseEntity getReply(Update update) {
-        synchronized (telegramSynchronizedService.getMessageLock(update.getMessage().getFrom().getId())) {
-            System.out.println(update.getMessage().toString());
-            System.out.println(update.getMessage().getText());
+    public ResponseEntity getReply(Update update, String text) {
+//        System.out.println("id: " + update.getMessage().getFrom().getId());
+//        System.out.println("Callback id: " + update.getCallbackQuery().getFrom().getId());
+
+        synchronized (telegramSynchronizedService.getMessageLock(update)) {
+//            System.out.println(update.getMessage().toString());
+//            System.out.println(update.getMessage().getText());
 
             for (AbstractResponse res : this.response) {
-                if (res.getTeg().equals(update.getMessage().getText())) {
+//                if (res.getTeg().equals(update.getMessage().getText())) {
+                if (text.startsWith(res.getTeg())) {
                     return res.generateSendMessage(update);
                 }
             }
 //emoji
-            if (EmojiManager.containsEmoji(update.getMessage().getText())) {
+            if (EmojiManager.containsEmoji(text)) {
                 for (AbstractResponse res : this.response) {
                     if (res.getTeg().equals("emoji")) {
                         return res.generateSendMessage(update);
@@ -47,16 +51,16 @@ public class MainMessageController {
                 }
             }
 
-
+//todo мб починить error
 //Error: Incorrect command
-            for (AbstractResponse res : this.response) {
-                if (res.getTeg().equals("error")) {
-                    return res.generateSendMessage(update);
-                }
-            }
+//            for (AbstractResponse res : this.response) {
+//                if (res.getTeg().equals("error")) {
+//                    return res.generateSendMessage(update);
+//                }
+//            }
 //Error: Incorrect command
             SendMessage responseMessage = new SendMessage();
-            responseMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
+            responseMessage.setChatId(String.valueOf(text));
             responseMessage.setText("Incorrect command");
             ResponseEntity response = new ResponseEntity();
             response.setResponse(responseMessage);

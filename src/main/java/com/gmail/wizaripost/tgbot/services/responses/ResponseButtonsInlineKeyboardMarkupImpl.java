@@ -36,7 +36,7 @@ public class ResponseButtonsInlineKeyboardMarkupImpl extends AbstractResponse {
     @Override
     public String getTeg() {
 //        return "InlineKeyboardMarkup";
-        return "/test1";
+        return "/testInline";
     }
 
     public InlineKeyboardMarkup createInlineKeyboard(List<List<String>> buttons) {
