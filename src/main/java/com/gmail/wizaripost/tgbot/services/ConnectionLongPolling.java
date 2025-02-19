@@ -49,24 +49,8 @@ public class ConnectionLongPolling extends TelegramLongPollingBot {
         }
         if (update.hasCallbackQuery()) {
             System.out.println("callback: " + update.getCallbackQuery().getData());
-            System.out.println("callback: " + update);
-            System.out.println("callback: " + update.getCallbackQuery().getMessage().getChatId().toString());
-//            CreatePaginationKeyboard keyboard = new CreatePaginationKeyboard();
-//            InlineKeyboardMarkup inlineKeyboardMarkup = keyboard.create()
-
-
-//                String callbackData = update.getCallbackQuery().getData();
-//                if (callbackData.startsWith("page_")) {
-//                    int page = Integer.parseInt(callbackData.split("_")[1]);
-//                    int totalPages = 5; // Общее количество страниц
-//
-//                    // Обновление сообщения с новой клавиатурой
-//                    EditMessageText editMessage = new EditMessageText();
-//                    editMessage.setChatId(update.getCallbackQuery().getMessage().getChatId().toString());
-//                    editMessage.setMessageId(update.getCallbackQuery().getMessage().getMessageId());
-//                    editMessage.setText("Страница " + page + " из " + totalPages);
-//                    ResponsePaginationKeyboardImpl responsePaginationKeyboard = new ResponsePaginationKeyboardImpl();
-////                    editMessage.setReplyMarkup(responsePaginationKeyboard.createPaginationKeyboard(page, totalPages));
+//            System.out.println("callback: " + update);
+//            System.out.println("callback: " + update.getCallbackQuery().getMessage().getChatId().toString());
 
             try {
                 ResponseEntity responseEntity = mainMessageController.getReply(update,

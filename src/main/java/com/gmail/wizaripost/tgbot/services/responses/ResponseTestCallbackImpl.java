@@ -36,6 +36,6 @@ public class ResponseTestCallbackImpl extends AbstractResponse {
 
     @Override
     public String getTeg() {
-        return "page_";
+        return "qtestpage_";
     }
 }
