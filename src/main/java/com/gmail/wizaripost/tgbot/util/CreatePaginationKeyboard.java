@@ -17,7 +17,7 @@ public class CreatePaginationKeyboard {
             keyboard.add(Collections.singletonList(
                     InlineKeyboardButton.builder()
                             .text("⬅️ Назад")
-                            .callbackData("page_" + (currentPage - 1))
+                            .callbackData("qpage_" + (currentPage - 1))
                             .build()
             ));
         }
@@ -26,7 +26,7 @@ public class CreatePaginationKeyboard {
             keyboard.add(Collections.singletonList(
                     InlineKeyboardButton.builder()
                             .text("Вперед ➡️")
-                            .callbackData("page_" + (currentPage + 1))
+                            .callbackData("qpage_" + (currentPage + 1))
                             .build()
             ));
         }

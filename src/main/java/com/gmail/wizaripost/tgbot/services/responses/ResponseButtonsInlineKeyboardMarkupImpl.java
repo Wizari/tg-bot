@@ -52,7 +52,7 @@ public class ResponseButtonsInlineKeyboardMarkupImpl extends AbstractResponse {
                 InlineKeyboardButton button = new InlineKeyboardButton(buttonText);
                 // Устанавливаем callbackData (например, текст кнопки)
 //                button.setCallbackData(buttonText);
-                button.setCallbackData("page_"+buttonText);
+                button.setCallbackData("qpage_"+buttonText);
                 // Добавляем кнопку в ряд
                 buttonRow.add(button);
             }
