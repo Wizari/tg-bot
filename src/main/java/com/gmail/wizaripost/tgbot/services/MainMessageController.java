@@ -53,11 +53,11 @@ public class MainMessageController {
 
 //todo мб починить error
 //Error: Incorrect command
-//            for (AbstractResponse res : this.response) {
-//                if (res.getTeg().equals("error")) {
-//                    return res.generateSendMessage(update);
-//                }
-//            }
+            for (AbstractResponse res : this.response) {
+                if (res.getTeg().equals("error")) {
+                    return res.generateSendMessage(update);
+                }
+            }
 //Error: Incorrect command
             SendMessage responseMessage = new SendMessage();
             responseMessage.setChatId(String.valueOf(text));

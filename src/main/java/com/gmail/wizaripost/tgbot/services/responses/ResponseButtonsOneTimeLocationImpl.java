@@ -9,28 +9,21 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
-public class ResponseButtonsOneTimeImpl extends AbstractResponse {
+public class ResponseButtonsOneTimeLocationImpl extends AbstractResponse {
     @Override
     public ResponseEntity generateSendMessage(Update update) {
-//        List<List<String>> buttons = new ArrayList<>();
-//        buttons.add(List.of("1"));
-//        buttons.add(List.of("2"));
-
         SendMessage responseMessage = new SendMessage();
         responseMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
         responseMessage.enableMarkdown(true);
-//        ReplyKeyboardMarkup markup = this.assembleReplyKeyboardMarkup(buttons);
         ReplyKeyboardMarkup markup = new ReplyKeyboardMarkup();
         KeyboardRow row = new KeyboardRow();
 
         // Добавляем кнопку в строку
         KeyboardButton button = new KeyboardButton();
         button.setText("Отправить местоположение");
-//        button.getRequestLocation();
         button.setRequestLocation(true);
         row.add(button);
 
@@ -50,6 +43,6 @@ public class ResponseButtonsOneTimeImpl extends AbstractResponse {
 
     @Override
     public String getTeg() {
-        return "/one";
+        return "/location";
     }
 }

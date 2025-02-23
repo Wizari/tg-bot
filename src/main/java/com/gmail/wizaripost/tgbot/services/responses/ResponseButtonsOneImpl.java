@@ -13,10 +13,11 @@ public class ResponseButtonsOneImpl extends AbstractResponse {
     @Override
     public ResponseEntity generateSendMessage(Update update) {
         List<List<String>> buttons = new ArrayList<>();
-        buttons.add(List.of("/start", "/testInline", "когда ты обновлялась?"));
+        buttons.add(List.of("/start", "/testInline", "/location"));
         buttons.add(List.of("/r User1", "Hello"));
         buttons.add(List.of("/one", "/weather"));
-        buttons.add(List.of("<", "1", "2", "3", ">"));
+//        buttons.add(List.of("<", "1", "2", "3", ">"));
+        buttons.add(List.of("1", "2"));
 
         SendMessage responseMessage = new SendMessage();
         responseMessage.setChatId(String.valueOf(update.getMessage().getChatId()));

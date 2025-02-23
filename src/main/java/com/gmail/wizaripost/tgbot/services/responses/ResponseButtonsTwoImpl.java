@@ -16,7 +16,8 @@ public class ResponseButtonsTwoImpl extends AbstractResponse {
         buttons.add(List.of("/start", "когда ты обновлялась?", "когда ты обновлялась?"));
         buttons.add(List.of("/r User1", "Hello"));
         buttons.add(List.of("Two", "/test1"));
-        buttons.add(List.of("<", "1", "2", "3", ">"));
+//        buttons.add(List.of("<", "1", "2", "3", ">"));
+        buttons.add(List.of("1", "2"));
 
         SendMessage responseMessage = new SendMessage();
         responseMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
