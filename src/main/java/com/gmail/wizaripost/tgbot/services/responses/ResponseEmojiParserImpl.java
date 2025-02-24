@@ -33,7 +33,7 @@ public class ResponseEmojiParserImpl extends AbstractResponse {
 
 
         SendMessage responseMessage = new SendMessage();
-        responseMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
+        responseMessage.setChatId(getChatId(update));
         responseMessage.setText("Emoji: \n"+ result);
         ResponseEntity response = new ResponseEntity();
         response.setResponse(responseMessage);

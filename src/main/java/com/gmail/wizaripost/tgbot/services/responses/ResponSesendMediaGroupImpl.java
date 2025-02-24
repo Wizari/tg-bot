@@ -16,15 +16,6 @@ import java.util.List;
 public class ResponSesendMediaGroupImpl extends AbstractResponse {
     @Override
     public ResponseEntity generateSendMessage(Update update) {
-//        SendPhoto sendPhoto = new SendPhoto();
-//        sendPhoto.setChatId(String.valueOf(update.getMessage().getChatId()));
-//        sendPhoto.setPhoto(new InputFile("https://cs15.pikabu.ru/post_img/2025/02/24/9/1740411851115088063.jpg"));
-//        sendPhoto.setPhoto(new InputFile("https://cs15.pikabu.ru/post_img/2025/02/24/9/1740411851115088063.jpg"));
-//        sendPhoto.setCaption("caption");
-
-
-        String chatId = update.getMessage().getChatId().toString();
-
         // Создаем список фотографий
         List<InputMedia> photos = new ArrayList<>();
 
@@ -43,11 +34,8 @@ public class ResponSesendMediaGroupImpl extends AbstractResponse {
 
         // Создаем объект SendMediaGroup
         SendMediaGroup mediaGroup = new SendMediaGroup();
-        mediaGroup.setChatId(chatId);
+        mediaGroup.setChatId(getChatId(update));
         mediaGroup.setMedias(photos);
-
-
-
 
         ResponseEntity response = new ResponseEntity();
         response.setResponse(mediaGroup);

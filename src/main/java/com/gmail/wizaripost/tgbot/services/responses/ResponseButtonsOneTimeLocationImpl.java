@@ -16,7 +16,7 @@ public class ResponseButtonsOneTimeLocationImpl extends AbstractResponse {
     @Override
     public ResponseEntity generateSendMessage(Update update) {
         SendMessage responseMessage = new SendMessage();
-        responseMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
+        responseMessage.setChatId(getChatId(update));
         responseMessage.enableMarkdown(true);
         ReplyKeyboardMarkup markup = new ReplyKeyboardMarkup();
         KeyboardRow row = new KeyboardRow();

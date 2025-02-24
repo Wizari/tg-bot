@@ -12,7 +12,7 @@ public class ResponsePhotoImpl extends AbstractResponse {
     @Override
     public ResponseEntity generateSendMessage(Update update) {
         SendPhoto sendPhoto = new SendPhoto();
-        sendPhoto.setChatId(String.valueOf(update.getMessage().getChatId()));
+        sendPhoto.setChatId(getChatId(update));
         sendPhoto.setPhoto(new InputFile("https://cs15.pikabu.ru/post_img/2025/02/24/9/1740411851115088063.jpg"));
         sendPhoto.setPhoto(new InputFile("https://cs15.pikabu.ru/post_img/2025/02/24/9/1740411851115088063.jpg"));
         sendPhoto.setCaption("caption");

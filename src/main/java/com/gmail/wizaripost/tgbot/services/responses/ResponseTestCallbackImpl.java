@@ -22,7 +22,7 @@ public class ResponseTestCallbackImpl extends AbstractResponse {
 
             // Обновление сообщения с новой клавиатурой
             EditMessageText editMessage = new EditMessageText();
-            editMessage.setChatId(update.getCallbackQuery().getMessage().getChatId().toString());
+            editMessage.setChatId(getChatId(update));
             editMessage.setMessageId(update.getCallbackQuery().getMessage().getMessageId());
             editMessage.setText("Страница " + page + " из " + totalPages);
             editMessage.setReplyMarkup(keyboard.create(page, totalPages));

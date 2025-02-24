@@ -21,7 +21,7 @@ public class ResponseButtonsOneTimeImpl extends AbstractResponse {
 //        buttons.add(List.of("2"));
 
         SendMessage responseMessage = new SendMessage();
-        responseMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
+        responseMessage.setChatId(getChatId(update));
         responseMessage.enableMarkdown(true);
 //        ReplyKeyboardMarkup markup = this.assembleReplyKeyboardMarkup(buttons);
         ReplyKeyboardMarkup markup = new ReplyKeyboardMarkup();

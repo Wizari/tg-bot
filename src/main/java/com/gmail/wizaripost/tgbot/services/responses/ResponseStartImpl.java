@@ -10,7 +10,7 @@ public class ResponseStartImpl extends AbstractResponse {
     @Override
     public ResponseEntity generateSendMessage(Update update) {
         SendMessage responseMessage = new SendMessage();
-        responseMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
+        responseMessage.setChatId(getChatId(update));
         responseMessage.setText("Hello!");
         ResponseEntity response = new ResponseEntity();
         response.setResponse(responseMessage);

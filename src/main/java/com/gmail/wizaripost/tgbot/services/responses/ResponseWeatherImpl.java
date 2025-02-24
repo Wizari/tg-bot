@@ -22,7 +22,7 @@ public class ResponseWeatherImpl extends AbstractResponse {
 
 
         SendMessage responseMessage = new SendMessage();
-        responseMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
+        responseMessage.setChatId(getChatId(update));
         responseMessage.setText(" "
                 + weatherResponse.getCurrent().getTemperature_2m()
         + EmojiParser.parseToUnicode(":smile:"));

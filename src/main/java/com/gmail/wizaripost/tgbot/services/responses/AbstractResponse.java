@@ -17,18 +17,15 @@ public abstract class AbstractResponse {
 
     public abstract String getTeg();
 
-    protected ReplyKeyboardMarkup assembleReplyKeyboardMarkup(List<List<String>> buttons) {
-        ReplyKeyboardMarkup markup = new ReplyKeyboardMarkup();
-//        markup.setOneTimeKeyboard(true);
-        markup.setKeyboard(
-                buttons.stream()
-                        .map(rowButtons -> {
-                            KeyboardRow row = new KeyboardRow();
-                            rowButtons.forEach(row::add); // Добавляем кнопки в строку
-                            return row;
-                        })
-                        .collect(Collectors.toList()) // Собираем все строки в клавиатуру
-        );
-        return markup;
+    protected String getChatId(Update update) {
+        if (update.hasMessage()) {
+            return String.valueOf(update.getMessage().getChatId());
+        }
+        if (update.hasCallbackQuery()) {
+            return String.valueOf(update.getCallbackQuery().getMessage().getChatId());
+        }
+        return null;
     }
+
+
 }
