@@ -18,6 +18,8 @@ public class TelegramSynchronizedService {
                 messageId = update.getMessage().getFrom().getId();
             } else if (update.hasCallbackQuery()) {
                 messageId = update.getCallbackQuery().getFrom().getId();
+            } else if (update.hasMessage() && update.getMessage().hasLocation()) {
+                messageId = update.getMessage().getFrom().getId();
             }
 
 

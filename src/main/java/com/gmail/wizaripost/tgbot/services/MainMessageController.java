@@ -35,6 +35,12 @@ public class MainMessageController {
 
             for (AbstractResponse res : this.response) {
 //                if (res.getTeg().equals(update.getMessage().getText())) {
+                if (text.equals(res.getTeg())) {
+                    return res.generateSendMessage(update);
+                }
+            }
+
+            for (AbstractResponse res : this.response) {
                 if (text.startsWith(res.getTeg())) {
                     return res.generateSendMessage(update);
                 }

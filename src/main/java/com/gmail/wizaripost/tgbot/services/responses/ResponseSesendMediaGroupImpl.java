@@ -3,8 +3,6 @@ package com.gmail.wizaripost.tgbot.services.responses;
 import com.gmail.wizaripost.tgbot.model.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMediaGroup;
-import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
-import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.media.InputMedia;
 import org.telegram.telegrambots.meta.api.objects.media.InputMediaPhoto;
@@ -13,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ResponSesendMediaGroupImpl extends AbstractResponse {
+public class ResponseSesendMediaGroupImpl extends AbstractResponse {
     @Override
     public ResponseEntity generateSendMessage(Update update) {
         // Создаем список фотографий

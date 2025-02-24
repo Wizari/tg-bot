@@ -42,6 +42,8 @@ public class ConnectionLongPolling extends TelegramLongPollingBot {
         if (update.hasMessage() && update.getMessage().hasLocation()) {
             System.out.println("Получено сообщение2: " + update.getMessage().getLocation().toString());
             System.out.println("getLatitude: " + update.getMessage().getLocation().getLatitude());
+            this.sendResponseToLocation(update);
+
         }
 
         if (update.hasMessage() && update.getMessage().hasText()) {
@@ -113,7 +115,34 @@ public class ConnectionLongPolling extends TelegramLongPollingBot {
         }
     }
 
-    @Override
+    private void sendResponseToLocation(Update update) {
+        try {
+            ResponseEntity responseEntity = mainMessageController.getReply(update,
+                    "/locationMessage");
+            if (responseEntity.isDeleteMessage()) {
+                this.deleteMessage(update.getMessage().getChatId(),
+                        update.getMessage().getMessageId());
+            }
+
+            if (responseEntity.getResponse() instanceof BotApiMethod) {
+                execute((BotApiMethod) responseEntity.getResponse());
+            }
+//            if (responseEntity.getResponse() instanceof SendPhoto) {
+//                execute((SendPhoto) responseEntity.getResponse());
+//            }
+//            if (responseEntity.getResponse() instanceof SendMediaGroup) {
+//                execute((SendMediaGroup) responseEntity.getResponse());
+//            }
+//            if (responseEntity.getResponse() instanceof EditMessageReplyMarkup) {
+//                execute((EditMessageReplyMarkup) responseEntity.getResponse());
+//            }
+
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+            @Override
     public String getBotUsername() {
         return botUsername;
     }
