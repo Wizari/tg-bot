@@ -13,9 +13,9 @@ public class ResponseButtonsTwoImpl extends AbstractResponse {
     @Override
     public ResponseEntity generateSendMessage(Update update) {
         List<List<String>> buttons = new ArrayList<>();
-        buttons.add(List.of("/start", "когда ты обновлялась?", "когда ты обновлялась?"));
-        buttons.add(List.of("/r User1", "Hello"));
-        buttons.add(List.of("Two", "/test1"));
+        buttons.add(List.of("/start", "/photo", "/photo2"));
+        buttons.add(List.of("/r User1", "-"));
+        buttons.add(List.of("Two", "-"));
 //        buttons.add(List.of("<", "1", "2", "3", ">"));
         buttons.add(List.of("1", "2"));
 
