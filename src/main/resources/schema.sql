@@ -1,4 +1,5 @@
 CREATE TABLE IF NOT EXISTS users (
-                                     id SERIAL PRIMARY KEY,
-                                     name VARCHAR(255) NOT NULL
-    );
+                       id BIGSERIAL PRIMARY KEY,
+                       name VARCHAR(255) NOT NULL,
+                       telegram_id BIGINT NOT NULL
+);
