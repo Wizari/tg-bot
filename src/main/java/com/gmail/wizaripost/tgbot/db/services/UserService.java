@@ -2,9 +2,11 @@ package com.gmail.wizaripost.tgbot.db.services;
 
 
 import com.gmail.wizaripost.tgbot.db.repository.UserRepository;
+import com.gmail.wizaripost.tgbot.entity.Location;
 import com.gmail.wizaripost.tgbot.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -30,10 +32,21 @@ public class UserService {
     public boolean haveUserByTelegramId(Long telegramId) {
         return userRepository.findByTelegramId(telegramId).isPresent();
     }
-
     public User getUserByTelegramId(Long telegramId) {
         return userRepository.findByTelegramId(telegramId).orElse(null);
     }
+    @Transactional
+    public User getUserWithLocations(Long telegramId) {
+        User user = userRepository.findByTelegramIdWithLocations(telegramId);
+//        if (user != null) {
+//            System.out.println("User: " + user.getName());
+//            for (Location location : user.getLocations()) {
+//                System.out.println("Location: " + location.getName());
+//            }
+//        }
+        return user;
+    }
+
 
 //    public boolean haveUserByTelegramId(Long telegramId) {
 //        for (User user : userRepository.findAll()) {

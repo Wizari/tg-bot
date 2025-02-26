@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -36,5 +38,20 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hashCode(1756406093);
+    }
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Location> locations = new ArrayList<>();
+
+    // Метод для добавления локации
+    public void addLocation(Location location) {
+        locations.add(location);
+        location.setUser(this);
+    }
+
+    // Метод для удаления локации
+    public void removeLocation(Location location) {
+        locations.remove(location);
+        location.setUser(null);
     }
 }
