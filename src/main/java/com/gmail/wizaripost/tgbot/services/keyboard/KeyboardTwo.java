@@ -13,10 +13,10 @@ public class KeyboardTwo extends AbstractKeyboard {
     public SendMessage addKeyboard(Update update, SendMessage responseMessage) {
         List<List<String>> buttons = new ArrayList<>();
         buttons.add(List.of("/start", "/photo", "/photo2"));
-        buttons.add(List.of("/r User1", "-"));
+        buttons.add(List.of("-", "-"));
         buttons.add(List.of("Two", "-"));
 //        buttons.add(List.of("<", "1", "2", "3", ">"));
-        buttons.add(List.of("1", "2"));
+        buttons.add(List.of("1", "2", "3"));
 
 
         responseMessage.enableMarkdown(true);

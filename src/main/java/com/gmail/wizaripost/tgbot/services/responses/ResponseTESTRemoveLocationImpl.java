@@ -1,6 +1,7 @@
 package com.gmail.wizaripost.tgbot.services.responses;
 
 import com.gmail.wizaripost.tgbot.db.services.UserService;
+import com.gmail.wizaripost.tgbot.entity.Location;
 import com.gmail.wizaripost.tgbot.entity.User;
 import com.gmail.wizaripost.tgbot.model.ResponseEntity;
 import com.gmail.wizaripost.tgbot.services.keyboard.KeyboardOne;
@@ -10,37 +11,47 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Service
-public class ResponseRegistrationImpl extends AbstractResponse {
+public class ResponseTESTRemoveLocationImpl extends AbstractResponse {
 
     private final UserService userService;
 
     @Autowired
-    public ResponseRegistrationImpl(UserService userService) {
+    public ResponseTESTRemoveLocationImpl(UserService userService) {
         this.userService = userService;
     }
 
     @Override
     public ResponseEntity generateSendMessage(Update update) {
-        String message = update.getMessage().getText();
-        Long telegramUserId = update.getMessage().getFrom().getId();
+//        String message = update.getMessage().getText();
+        Long telegramUserId = this.getUserId(update);
+        String callbackData = update.getCallbackQuery().getData();
+        int locationId = Integer.parseInt(callbackData.split("_")[1]);
         String responseText;
 
 
         if (!userService.haveUserByTelegramId(telegramUserId)) {
-            // Если пользователя нет, создаем нового
-            User newUser = new User(null, message.substring(3), telegramUserId, null);
-            userService.saveUser(newUser);
-            responseText = String.format("Registration: Name = *%s*, tgId = %d", message.substring(3), telegramUserId);
+            User user = new User(null, "anonymous", telegramUserId, null);
+            responseText = "Location not found";
+            userService.saveUser(user);
         } else {
-            // Если пользователь уже существует, обновляем его имя
-            User user = userService.getUserByTelegramId(telegramUserId);
+            User user = userService.getUserWithLocations(telegramUserId);
             if (user != null) {
-                user.setName(message.substring(3));
-                userService.saveUser(user);
-                responseText = String.format("Rename: Name = *%s*, tgId = %d", message.substring(3), telegramUserId);
+                for (Location location : user.getLocations()) {
+                    if (location.getId() == locationId) {
+                        user.removeLocation(location);
+                        userService.saveUser(user);
+                        break;
+                    }
+                }
+                StringBuilder stringBuilder = new StringBuilder();
+                for (Location location : user.getLocations()) {
+                    stringBuilder.append("Location: " + location.getName() + "\n");
+                }
+                responseText = stringBuilder.toString();
             } else {
                 responseText = "Registration aborted";
             }
+
         }
 
 
@@ -58,6 +69,8 @@ public class ResponseRegistrationImpl extends AbstractResponse {
 
     @Override
     public String getTeg() {
-        return "/r ";
+        return "/removeLocation_";
     }
+
+
 }

@@ -17,6 +17,15 @@ public class ResponseErrorImpl extends AbstractResponse {
         return response;
     }
 
+    public ResponseEntity generateSendMessage(Update update, String exception) {
+        SendMessage responseMessage = new SendMessage();
+        responseMessage.setChatId(getChatId(update));
+        responseMessage.setText("Error: [ " + exception + " ]");
+        ResponseEntity response = new ResponseEntity();
+        response.setResponse(responseMessage);
+        return response;
+    }
+
     @Override
     public String getTeg() {
         return "error";

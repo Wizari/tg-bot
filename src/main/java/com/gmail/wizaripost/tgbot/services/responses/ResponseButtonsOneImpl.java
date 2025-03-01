@@ -1,6 +1,7 @@
 package com.gmail.wizaripost.tgbot.services.responses;
 
 import com.gmail.wizaripost.tgbot.model.ResponseEntity;
+import com.gmail.wizaripost.tgbot.services.keyboard.AbstractKeyboard;
 import com.gmail.wizaripost.tgbot.services.keyboard.KeyboardOne;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -17,8 +18,8 @@ public class ResponseButtonsOneImpl extends AbstractResponse {
         responseMessage.setChatId(getChatId(update));
         responseMessage.setText("Hello!");
 
-        KeyboardOne keyboardOne = new KeyboardOne();
-        responseMessage = keyboardOne.addKeyboard(update, responseMessage);
+        AbstractKeyboard keyboard = new KeyboardOne();
+        responseMessage = keyboard.addKeyboard(update, responseMessage);
 
         ResponseEntity response = new ResponseEntity();
         response.setResponse(responseMessage);

@@ -37,32 +37,6 @@ public class UserService {
     }
     @Transactional
     public User getUserWithLocations(Long telegramId) {
-        User user = userRepository.findByTelegramIdWithLocations(telegramId);
-//        if (user != null) {
-//            System.out.println("User: " + user.getName());
-//            for (Location location : user.getLocations()) {
-//                System.out.println("Location: " + location.getName());
-//            }
-//        }
-        return user;
+        return userRepository.findByTelegramIdWithLocations(telegramId);
     }
-
-
-//    public boolean haveUserByTelegramId(Long telegramId) {
-//        for (User user : userRepository.findAll()) {
-//            if (telegramId.equals(user.getTelegramId())) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-//
-//    public User getUserByTelegramId(Long telegramId) {
-//        for (User user : userRepository.findAll()) {
-//            if (telegramId.equals(user.getTelegramId())) {
-//                return user;
-//            }
-//        }
-//        return null;
-//    }
 }

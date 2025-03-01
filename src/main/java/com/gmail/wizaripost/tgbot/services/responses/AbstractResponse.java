@@ -27,5 +27,15 @@ public abstract class AbstractResponse {
         return null;
     }
 
+    protected Long getUserId(Update update) {
+        if (update.hasMessage()) {
+            return update.getMessage().getFrom().getId();
+        }
+        if (update.hasCallbackQuery()) {
+            return update.getCallbackQuery().getFrom().getId();
+        }
+        return null;
+    }
+
 
 }

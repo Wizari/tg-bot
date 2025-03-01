@@ -38,24 +38,28 @@ public class ConnectionLongPolling extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        System.out.println("Получено обновление1: " + update);
+        System.out.println("Получено обновление: " + update);
         if (update.hasMessage() && update.getMessage().hasLocation()) {
-            System.out.println("Получено сообщение2: " + update.getMessage().getLocation().toString());
+//            System.out.println("Получено сообщение2: " + update.getMessage().getLocation().toString());
             System.out.println("getLatitude: " + update.getMessage().getLocation().getLatitude());
-            this.sendResponseToLocation(update);
 
+
+            this.sendResponseToLocation(update);
         }
 
         if (update.hasMessage() && update.getMessage().hasText()) {
+            System.out.println("update.getMessage().getFrom().getId(): " + update.getMessage().getFrom().getId());
+
 //            System.out.println("Получено сообщение2: " + update.getMessage().getText());
 //            System.out.println("Получено сообщение2: " + update.getMessage().getChatId());
+
 
             this.sendResponseToMessage(update);
         }
         if (update.hasCallbackQuery()) {
             System.out.println("callback: " + update.getCallbackQuery().getData());
-//            System.out.println("callback: " + update);
-//            System.out.println("callback: " + update.getCallbackQuery().getMessage().getChatId().toString());
+//            System.out.println("CallID " + update.getCallbackQuery().getFrom().getId());
+
 
             this.sendResponseToCallbackQuery(update);
         }
@@ -96,8 +100,6 @@ public class ConnectionLongPolling extends TelegramLongPollingBot {
         try {
             ResponseEntity responseEntity = mainMessageController.getReply(update,
                     update.getCallbackQuery().getData());
-//            execute((SendMessage) responseEntity.getResponse());
-
 
             if (responseEntity.getResponse() instanceof BotApiMethod) {
                 execute((BotApiMethod) responseEntity.getResponse());
@@ -108,7 +110,13 @@ public class ConnectionLongPolling extends TelegramLongPollingBot {
             if (responseEntity.getResponse() instanceof SendMediaGroup) {
                 execute((SendMediaGroup) responseEntity.getResponse());
             }
-
+            if (update.getCallbackQuery().getData().equals("ОК")) {
+                System.out.println("\"ОК\" - " +update.getCallbackQuery().getData());
+                System.out.println("\"ОК\"");
+//                deleteRecord(chatId);
+            } else {
+                System.out.println(update.getCallbackQuery().getData());
+            }
 
         } catch (TelegramApiException e) {
             e.printStackTrace();
@@ -127,15 +135,6 @@ public class ConnectionLongPolling extends TelegramLongPollingBot {
             if (responseEntity.getResponse() instanceof BotApiMethod) {
                 execute((BotApiMethod) responseEntity.getResponse());
             }
-//            if (responseEntity.getResponse() instanceof SendPhoto) {
-//                execute((SendPhoto) responseEntity.getResponse());
-//            }
-//            if (responseEntity.getResponse() instanceof SendMediaGroup) {
-//                execute((SendMediaGroup) responseEntity.getResponse());
-//            }
-//            if (responseEntity.getResponse() instanceof EditMessageReplyMarkup) {
-//                execute((EditMessageReplyMarkup) responseEntity.getResponse());
-//            }
 
         } catch (TelegramApiException e) {
             e.printStackTrace();

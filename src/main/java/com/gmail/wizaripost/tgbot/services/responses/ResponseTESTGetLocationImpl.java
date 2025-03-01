@@ -11,12 +11,12 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Service
-public class ResponseTESTgetLocationImpl extends AbstractResponse {
+public class ResponseTESTGetLocationImpl extends AbstractResponse {
 
     private final UserService userService;
 
     @Autowired
-    public ResponseTESTgetLocationImpl(UserService userService) {
+    public ResponseTESTGetLocationImpl(UserService userService) {
         this.userService = userService;
     }
 

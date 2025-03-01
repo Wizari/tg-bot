@@ -32,7 +32,6 @@ public class ResponseButtonsOneTimeLocationImpl extends AbstractResponse {
         keyboard.add(row);
         markup.setKeyboard(keyboard);
         markup.setOneTimeKeyboard(true);
-//        markup.setResizeKeyboard(true);
 
         responseMessage.setReplyMarkup(markup);
         responseMessage.setText("Мeстоположение");
