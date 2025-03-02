@@ -62,9 +62,8 @@ public class ResponseTESTRemoveLocationImpl extends AbstractResponse {
         KeyboardOne keyboardOne = new KeyboardOne();
         responseMessage = keyboardOne.addKeyboard(update, responseMessage);
 
-        ResponseEntity response = new ResponseEntity();
-        response.setResponse(responseMessage);
-        return response;
+        return new ResponseEntity(responseMessage);
+
     }
 
     @Override

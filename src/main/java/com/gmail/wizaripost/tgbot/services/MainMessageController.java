@@ -41,7 +41,7 @@ public class MainMessageController {
             }
 
             for (AbstractResponse res : this.response) {
-                if (text.startsWith(res.getTeg())) {
+                if (text.startsWith(res.getTeg()) && res.postfixAllowed()) {
                     return res.generateSendMessage(update);
                 }
             }
@@ -68,6 +68,7 @@ public class MainMessageController {
             ResponseEntity response = new ResponseEntity();
             response.setResponse(responseMessage);
             return response;
+//            return new ResponseEntity();
         }
     }
 }

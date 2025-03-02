@@ -19,9 +19,7 @@ public class ResponseButtonsInlineKeyboardImpl extends AbstractResponse {
         KeyboardInline keyboard = new KeyboardInline();
         responseMessage =(SendMessage) keyboard.addKeyboard(update, responseMessage);
 
-        ResponseEntity response = new ResponseEntity();
-        response.setResponse(responseMessage);
-        return response;
+        return new ResponseEntity(responseMessage);
     }
 
 

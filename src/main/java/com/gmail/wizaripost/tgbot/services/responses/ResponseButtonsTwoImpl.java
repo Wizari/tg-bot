@@ -22,10 +22,7 @@ public class ResponseButtonsTwoImpl extends AbstractResponse {
         AbstractKeyboard keyboard = new KeyboardTwo();
         responseMessage = keyboard.addKeyboard(update, responseMessage);
 
-        ResponseEntity response = new ResponseEntity();
-        response.setResponse(responseMessage);
-        response.setDeleteMessage(true);
-        return response;
+        return new ResponseEntity(responseMessage, true);
     }
 
 

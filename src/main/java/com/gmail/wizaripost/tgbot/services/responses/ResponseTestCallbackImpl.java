@@ -29,9 +29,8 @@ public class ResponseTestCallbackImpl extends AbstractResponse {
 //            ResponsePaginationKeyboardImpl responsePaginationKeyboard = new ResponsePaginationKeyboardImpl();
 ////                    editMessage.setReplyMarkup(responsePaginationKeyboard.createPaginationKeyboard(page, totalPages));
 
-        ResponseEntity response = new ResponseEntity();
-        response.setResponse(editMessage);
-        return response;
+
+        return new ResponseEntity(editMessage);
     }
 
     @Override

@@ -36,10 +36,7 @@ public class ResponseButtonsOneTimeLocationImpl extends AbstractResponse {
         responseMessage.setReplyMarkup(markup);
         responseMessage.setText("Мeстоположение");
 
-        ResponseEntity response = new ResponseEntity();
-        response.setResponse(responseMessage);
-        response.setDeleteMessage(true);
-        return response;
+        return new ResponseEntity(responseMessage, true);
     }
 
 

@@ -35,9 +35,7 @@ public class ResponseSesendMediaGroupImpl extends AbstractResponse {
         mediaGroup.setChatId(getChatId(update));
         mediaGroup.setMedias(photos);
 
-        ResponseEntity response = new ResponseEntity();
-        response.setResponse(mediaGroup);
-        return response;
+        return new ResponseEntity(mediaGroup);
     }
 
     @Override

@@ -1,8 +1,10 @@
 package com.gmail.wizaripost.tgbot.services.responses;
 
+import com.gmail.wizaripost.tgbot.model.AppState;
 import com.gmail.wizaripost.tgbot.model.ResponseEntity;
 import com.gmail.wizaripost.tgbot.services.keyboard.AbstractKeyboard;
 import com.gmail.wizaripost.tgbot.services.keyboard.KeyboardOne;
+import com.gmail.wizaripost.tgbot.util.States;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -21,10 +23,7 @@ public class ResponseButtonsOneImpl extends AbstractResponse {
         AbstractKeyboard keyboard = new KeyboardOne();
         responseMessage = keyboard.addKeyboard(update, responseMessage);
 
-        ResponseEntity response = new ResponseEntity();
-        response.setResponse(responseMessage);
-        response.setDeleteMessage(true);
-        return response;
+        return new ResponseEntity(responseMessage, true);
     }
 
 

@@ -40,5 +40,10 @@ public class ResponseButtonsPaginationInlineKeyboardImpl extends AbstractRespons
     public String getTeg() {
         return "qpage_";
     }
+
+    @Override
+    public boolean postfixAllowed() {
+        return true;
+    }
 }
 

@@ -17,6 +17,9 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageTe
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import static com.gmail.wizaripost.tgbot.util.Utils.getChatId;
+import static com.gmail.wizaripost.tgbot.util.Utils.getUserId;
+
 
 @Service
 @PropertySource("classpath:secrets.properties")
@@ -39,6 +42,8 @@ public class ConnectionLongPolling extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         System.out.println("Получено обновление: " + update);
+//        System.out.println("getUser(update).getId() " + getUserId(update));
+//        System.out.println("getUser(update).getId() " + getChatId(update));
         if (update.hasMessage() && update.getMessage().hasLocation()) {
 //            System.out.println("Получено сообщение2: " + update.getMessage().getLocation().toString());
             System.out.println("getLatitude: " + update.getMessage().getLocation().getLatitude());

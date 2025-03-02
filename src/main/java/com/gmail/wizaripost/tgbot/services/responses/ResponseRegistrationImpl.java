@@ -51,13 +51,17 @@ public class ResponseRegistrationImpl extends AbstractResponse {
         KeyboardOne keyboardOne = new KeyboardOne();
         responseMessage = keyboardOne.addKeyboard(update, responseMessage);
 
-        ResponseEntity response = new ResponseEntity();
-        response.setResponse(responseMessage);
-        return response;
+        return new ResponseEntity(responseMessage);
+
     }
 
     @Override
     public String getTeg() {
         return "/r ";
+    }
+
+    @Override
+    public boolean postfixAllowed() {
+        return true;
     }
 }

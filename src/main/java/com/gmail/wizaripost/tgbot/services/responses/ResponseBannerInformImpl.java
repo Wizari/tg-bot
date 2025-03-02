@@ -15,9 +15,7 @@ public class ResponseBannerInformImpl extends AbstractResponse {
             responseMessage.setText("TEST! Уведомление что действие произошло");
             responseMessage.setShowAlert(true);
 
-            ResponseEntity response = new ResponseEntity();
-            response.setResponse(responseMessage);
-            return response;
+            return new ResponseEntity(responseMessage);
         }
         ResponseErrorImpl responseError = new ResponseErrorImpl();
         return responseError.generateSendMessage(update, "the request must be a CallbackQuery.");

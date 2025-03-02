@@ -17,9 +17,7 @@ public class ResponsePhotoImpl extends AbstractResponse {
         sendPhoto.setPhoto(new InputFile("https://cs15.pikabu.ru/post_img/2025/02/24/9/1740411851115088063.jpg"));
         sendPhoto.setCaption("caption");
 
-        ResponseEntity response = new ResponseEntity();
-        response.setResponse(sendPhoto);
-        return response;
+        return new ResponseEntity(sendPhoto);
     }
 
     @Override

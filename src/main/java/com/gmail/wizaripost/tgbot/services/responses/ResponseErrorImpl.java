@@ -12,18 +12,16 @@ public class ResponseErrorImpl extends AbstractResponse {
         SendMessage responseMessage = new SendMessage();
         responseMessage.setChatId(getChatId(update));
         responseMessage.setText("Error: Incorrect command!");
-        ResponseEntity response = new ResponseEntity();
-        response.setResponse(responseMessage);
-        return response;
+        return new ResponseEntity(responseMessage);
+
     }
 
     public ResponseEntity generateSendMessage(Update update, String exception) {
         SendMessage responseMessage = new SendMessage();
         responseMessage.setChatId(getChatId(update));
         responseMessage.setText("Error: [ " + exception + " ]");
-        ResponseEntity response = new ResponseEntity();
-        response.setResponse(responseMessage);
-        return response;
+        return new ResponseEntity(responseMessage);
+
     }
 
     @Override

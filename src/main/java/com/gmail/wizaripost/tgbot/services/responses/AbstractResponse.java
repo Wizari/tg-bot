@@ -1,6 +1,8 @@
 package com.gmail.wizaripost.tgbot.services.responses;
 
+import com.gmail.wizaripost.tgbot.model.AppState;
 import com.gmail.wizaripost.tgbot.model.ResponseEntity;
+import com.gmail.wizaripost.tgbot.util.States;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -36,6 +38,15 @@ public abstract class AbstractResponse {
         }
         return null;
     }
+
+    protected void setState(AppState state) {
+        States.INSTANCE.setState(state);
+    }
+    public boolean postfixAllowed() {
+        return false;
+    }
+
+
 
 
 }
