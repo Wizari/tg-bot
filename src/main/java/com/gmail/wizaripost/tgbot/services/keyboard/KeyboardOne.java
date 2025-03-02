@@ -15,7 +15,7 @@ public class KeyboardOne extends AbstractKeyboard {
         List<List<String>> buttons = new ArrayList<>();
         buttons.add(List.of("/start", "/testInline", "/location"));
         buttons.add(List.of("/r User1", "/add", "/getLoc"));
-        buttons.add(List.of("/one", "/weather"));
+        buttons.add(List.of("/inlineWeather", "/weather"));
 //        buttons.add(List.of("<", "1", "2", "3", ">"));
         buttons.add(List.of("1", "2", "3"));
 

@@ -1,7 +1,9 @@
 package com.gmail.wizaripost.tgbot.services;
 
+import com.gmail.wizaripost.tgbot.model.AppState;
 import com.gmail.wizaripost.tgbot.model.ResponseEntity;
 import com.gmail.wizaripost.tgbot.services.responses.AbstractResponse;
+import com.gmail.wizaripost.tgbot.util.States;
 import com.vdurmont.emoji.EmojiManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,12 +38,14 @@ public class MainMessageController {
             for (AbstractResponse res : this.response) {
 //                if (res.getTeg().equals(update.getMessage().getText())) {
                 if (text.equals(res.getTeg())) {
+                    States.INSTANCE.setState(AppState.IDLE);
                     return res.generateSendMessage(update);
                 }
             }
 
             for (AbstractResponse res : this.response) {
                 if (text.startsWith(res.getTeg()) && res.postfixAllowed()) {
+                    States.INSTANCE.setState(AppState.IDLE);
                     return res.generateSendMessage(update);
                 }
             }
@@ -49,26 +53,25 @@ public class MainMessageController {
             if (EmojiManager.containsEmoji(text)) {
                 for (AbstractResponse res : this.response) {
                     if (res.getTeg().equals("emoji")) {
+                        States.INSTANCE.setState(AppState.IDLE);
                         return res.generateSendMessage(update);
                     }
                 }
             }
 
-//todo мб починить error
 //Error: Incorrect command
             for (AbstractResponse res : this.response) {
                 if (res.getTeg().equals("error")) {
+                    States.INSTANCE.setState(AppState.IDLE);
                     return res.generateSendMessage(update);
                 }
             }
 //Error: Incorrect command
             SendMessage responseMessage = new SendMessage();
             responseMessage.setChatId(String.valueOf(text));
-            responseMessage.setText("Incorrect command");
-            ResponseEntity response = new ResponseEntity();
-            response.setResponse(responseMessage);
-            return response;
-//            return new ResponseEntity();
+            responseMessage.setText("not found \"response\"r");
+            States.INSTANCE.setState(AppState.WEATHER);
+            return new ResponseEntity(responseMessage);
         }
     }
 }

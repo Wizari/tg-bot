@@ -1,24 +1,19 @@
 package com.gmail.wizaripost.tgbot.services;
 
 import com.gmail.wizaripost.tgbot.model.ResponseEntity;
+import com.gmail.wizaripost.tgbot.util.States;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.send.SendMediaBotMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMediaGroup;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-
-import static com.gmail.wizaripost.tgbot.util.Utils.getChatId;
-import static com.gmail.wizaripost.tgbot.util.Utils.getUserId;
 
 
 @Service
@@ -53,9 +48,11 @@ public class ConnectionLongPolling extends TelegramLongPollingBot {
         }
 
         if (update.hasMessage() && update.getMessage().hasText()) {
-            System.out.println("update.getMessage().getFrom().getId(): " + update.getMessage().getFrom().getId());
-
-//            System.out.println("Получено сообщение2: " + update.getMessage().getText());
+            System.out.println("update.getMessage().getFrom().getId(): "
+                    + update.getMessage().getFrom().getId());
+//            System.out.println("Получено сообщение2: "+
+//                    States.INSTANCE.getState().toString() +
+//                    update.getMessage().getText());
 //            System.out.println("Получено сообщение2: " + update.getMessage().getChatId());
 
 
@@ -74,7 +71,8 @@ public class ConnectionLongPolling extends TelegramLongPollingBot {
     private void sendResponseToMessage(Update update) {
         try {
             ResponseEntity responseEntity = mainMessageController.getReply(update,
-                    update.getMessage().getText());
+                    States.INSTANCE.getStatePrefix()
+                            + update.getMessage().getText());
             if (responseEntity.isDeleteMessage()) {
                 this.deleteMessage(update.getMessage().getChatId(),
                         update.getMessage().getMessageId());
@@ -92,7 +90,6 @@ public class ConnectionLongPolling extends TelegramLongPollingBot {
             if (responseEntity.getResponse() instanceof EditMessageReplyMarkup) {
                 execute((EditMessageReplyMarkup) responseEntity.getResponse());
             }
-
 
 
 //            execute((SendMessage) responseEntity.getResponse());
@@ -116,7 +113,7 @@ public class ConnectionLongPolling extends TelegramLongPollingBot {
                 execute((SendMediaGroup) responseEntity.getResponse());
             }
             if (update.getCallbackQuery().getData().equals("ОК")) {
-                System.out.println("\"ОК\" - " +update.getCallbackQuery().getData());
+                System.out.println("\"ОК\" - " + update.getCallbackQuery().getData());
                 System.out.println("\"ОК\"");
 //                deleteRecord(chatId);
             } else {
@@ -146,7 +143,7 @@ public class ConnectionLongPolling extends TelegramLongPollingBot {
         }
     }
 
-            @Override
+    @Override
     public String getBotUsername() {
         return botUsername;
     }
