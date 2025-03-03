@@ -19,12 +19,21 @@ public abstract class AbstractResponse {
 
     public abstract String getTeg();
 
-    protected String getChatId(Update update) {
+//    protected String getChatId(Update update) {
+//        if (update.hasMessage()) {
+//            return String.valueOf(update.getMessage().getChatId());
+//        }
+//        if (update.hasCallbackQuery()) {
+//            return String.valueOf(update.getCallbackQuery().getMessage().getChatId());
+//        }
+//        return null;
+//    }
+    protected Long getChatId(Update update) {
         if (update.hasMessage()) {
-            return String.valueOf(update.getMessage().getChatId());
+            return update.getMessage().getChatId();
         }
         if (update.hasCallbackQuery()) {
-            return String.valueOf(update.getCallbackQuery().getMessage().getChatId());
+            return update.getCallbackQuery().getMessage().getChatId();
         }
         return null;
     }
@@ -39,9 +48,6 @@ public abstract class AbstractResponse {
         return null;
     }
 
-    protected void setState(AppState state) {
-        States.INSTANCE.setState(state);
-    }
     public boolean postfixAllowed() {
         return false;
     }

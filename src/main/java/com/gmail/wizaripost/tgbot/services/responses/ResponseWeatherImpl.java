@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import static com.gmail.wizaripost.tgbot.util.Utils.getChatId;
+
 
 @Service
 public class ResponseWeatherImpl extends AbstractResponse {
@@ -34,7 +36,8 @@ public class ResponseWeatherImpl extends AbstractResponse {
         responseMessage = (SendMessage) keyboard.addKeyboard(update, responseMessage);
 
 
-        States.INSTANCE.setState(AppState.WEATHER);
+        States.INSTANCE.setState(getChatId(update), AppState.WEATHER);
+
         return new ResponseEntity(responseMessage);
     }
 

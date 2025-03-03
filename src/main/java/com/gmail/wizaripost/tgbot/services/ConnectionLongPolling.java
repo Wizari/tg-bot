@@ -15,6 +15,8 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageRe
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import static com.gmail.wizaripost.tgbot.util.Utils.getChatId;
+
 
 @Service
 @PropertySource("classpath:secrets.properties")
@@ -71,7 +73,7 @@ public class ConnectionLongPolling extends TelegramLongPollingBot {
     private void sendResponseToMessage(Update update) {
         try {
             ResponseEntity responseEntity = mainMessageController.getReply(update,
-                    States.INSTANCE.getStatePrefix()
+                    States.INSTANCE.getStatePrefix(getChatId(update))
                             + update.getMessage().getText());
             if (responseEntity.isDeleteMessage()) {
                 this.deleteMessage(update.getMessage().getChatId(),
