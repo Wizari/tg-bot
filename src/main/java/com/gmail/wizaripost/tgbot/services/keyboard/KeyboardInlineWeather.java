@@ -33,6 +33,7 @@ public class KeyboardInlineWeather extends AbstractKeyboard {
         for (Location location : user.getLocations()) {
             buttons.add(Map.of(location.getName(), "WEATHER" + location.getName()));
         }
+        buttons.add(Map.of("ADD LOCATION", "WEATHERADD LOCATION"));
 
         responseMessage.enableMarkdown(true);
         responseMessage.setReplyMarkup(this.createInlineKeyboard(buttons));

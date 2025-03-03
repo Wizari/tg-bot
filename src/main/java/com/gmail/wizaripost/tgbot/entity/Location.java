@@ -25,4 +25,13 @@ public class Location {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    public Location(Double latitude, Double longitude, String name) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.name = name;
+    }
+
+    public Location() {
+    }
 }

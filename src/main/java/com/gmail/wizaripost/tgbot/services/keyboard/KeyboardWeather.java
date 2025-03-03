@@ -32,6 +32,7 @@ public class KeyboardWeather extends AbstractKeyboard {
         for (Location location : user.getLocations()) {
             buttons.add(List.of(location.getName()));
         }
+        buttons.add(List.of("ADD LOCATION"));
 
         responseMessage.enableMarkdown(true);
         responseMessage.setReplyMarkup(this.assembleReplyKeyboardMarkup(buttons));
