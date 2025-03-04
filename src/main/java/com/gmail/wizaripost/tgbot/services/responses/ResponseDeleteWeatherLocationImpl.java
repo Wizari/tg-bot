@@ -4,28 +4,31 @@ import com.gmail.wizaripost.tgbot.db.services.UserService;
 import com.gmail.wizaripost.tgbot.entity.Location;
 import com.gmail.wizaripost.tgbot.entity.User;
 import com.gmail.wizaripost.tgbot.model.ResponseEntity;
+import com.gmail.wizaripost.tgbot.services.keyboard.AbstractKeyboard;
+import com.gmail.wizaripost.tgbot.services.keyboard.KeyboardInlineWeatherDelete;
 import com.gmail.wizaripost.tgbot.services.keyboard.KeyboardOne;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
 @Service
-public class ResponseTESTRemoveLocationImpl extends AbstractResponse {
+public class ResponseDeleteWeatherLocationImpl extends AbstractResponse {
 
     private final UserService userService;
 
     @Autowired
-    public ResponseTESTRemoveLocationImpl(UserService userService) {
+    public ResponseDeleteWeatherLocationImpl(UserService userService) {
         this.userService = userService;
     }
 
     @Override
     public ResponseEntity generateSendMessage(Update update) {
-//        String message = update.getMessage().getText();
         Long telegramUserId = this.getUserId(update);
         String callbackData = update.getCallbackQuery().getData();
-        int locationId = Integer.parseInt(callbackData.split("_")[1]);
+        int locationId = Integer.parseInt(callbackData.split("DELETE_WEATHER")[1]);
         String responseText;
 
 
@@ -43,32 +46,34 @@ public class ResponseTESTRemoveLocationImpl extends AbstractResponse {
                         break;
                     }
                 }
-                StringBuilder stringBuilder = new StringBuilder();
-                for (Location location : user.getLocations()) {
-                    stringBuilder.append("Location: " + location.getName() + "\n");
-                }
-                responseText = stringBuilder.toString();
+                responseText = "Location removal successful";
             } else {
                 responseText = "Delete aborted";
             }
 
         }
 
+        // Обновление сообщения с клавиатурой
+        EditMessageText editMessage = new EditMessageText();
+        editMessage.setChatId(getChatId(update));
+        editMessage.setMessageId(update.getCallbackQuery().getMessage().getMessageId());
+        editMessage.setText("Delete Location");
+        AbstractKeyboard keyboard = new KeyboardInlineWeatherDelete(userService);
         SendMessage responseMessage = new SendMessage();
-        responseMessage.setChatId(getChatId(update));
-        responseMessage.setText(responseText);
+        responseMessage = keyboard.addKeyboard(update, responseMessage);
 
-        KeyboardOne keyboardOne = new KeyboardOne();
-        responseMessage = keyboardOne.addKeyboard(update, responseMessage);
+        editMessage.setReplyMarkup((InlineKeyboardMarkup) responseMessage.getReplyMarkup());
 
-        return new ResponseEntity(responseMessage);
-
+        return new ResponseEntity(editMessage);
     }
 
     @Override
     public String getTeg() {
-        return "/removeLocation_";
+        return "DELETE_WEATHER";
     }
 
-
+    @Override
+    public boolean postfixAllowed() {
+        return true;
+    }
 }

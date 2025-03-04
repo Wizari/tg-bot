@@ -44,11 +44,9 @@ public class ResponseAddWeatherLocationImpl extends AbstractResponse {
         String[] parts = message.split(" ", 3);
         double latitude = Double.parseDouble(parts[0]);
         double longitude = Double.parseDouble(parts[1]);
-
+        //todo автоопределение локи
         String locationName = parts[2];
-        System.out.println(latitude);
-        System.out.println(longitude);
-        System.out.println(locationName);
+
 
 
         if (!userService.haveUserByTelegramId(telegramUserId)) {
