@@ -9,6 +9,7 @@ import com.gmail.wizaripost.tgbot.model.WeatherResponse;
 import com.gmail.wizaripost.tgbot.services.WeatherService;
 import com.gmail.wizaripost.tgbot.services.keyboard.AbstractKeyboard;
 import com.gmail.wizaripost.tgbot.services.keyboard.KeyboardWeather;
+import com.gmail.wizaripost.tgbot.util.GeocodingService;
 import com.gmail.wizaripost.tgbot.util.States;
 import com.vdurmont.emoji.EmojiParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,10 +45,12 @@ public class ResponseAddWeatherLocationImpl extends AbstractResponse {
         String[] parts = message.split(" ", 3);
         double latitude = Double.parseDouble(parts[0]);
         double longitude = Double.parseDouble(parts[1]);
-        //todo автоопределение локи
-        String locationName = parts[2];
-
-
+        String locationName;
+        if (parts.length == 3) {
+            locationName = parts[2];
+        } else {
+            locationName = GeocodingService.getLocationName(latitude, longitude);
+        }
 
         if (!userService.haveUserByTelegramId(telegramUserId)) {
             User user = new User(null, "anonymous", telegramUserId, null);

@@ -3,10 +3,14 @@ package com.gmail.wizaripost.tgbot.services.responses;
 import com.gmail.wizaripost.tgbot.db.services.UserService;
 import com.gmail.wizaripost.tgbot.entity.Location;
 import com.gmail.wizaripost.tgbot.entity.User;
+import com.gmail.wizaripost.tgbot.model.AppState;
 import com.gmail.wizaripost.tgbot.model.ResponseEntity;
 import com.gmail.wizaripost.tgbot.model.WeatherResponse;
 import com.gmail.wizaripost.tgbot.services.WeatherService;
+import com.gmail.wizaripost.tgbot.services.keyboard.AbstractKeyboard;
 import com.gmail.wizaripost.tgbot.services.keyboard.KeyboardOne;
+import com.gmail.wizaripost.tgbot.services.keyboard.KeyboardWeather;
+import com.gmail.wizaripost.tgbot.util.States;
 import com.vdurmont.emoji.EmojiParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,6 +54,17 @@ public class ResponseGetWeatherImpl extends AbstractResponse {
                         responseText = " "
                                 + weatherResponse.getCurrent().getTemperature_2m()
                                 + EmojiParser.parseToUnicode(":smile:");
+
+
+                        SendMessage responseMessage = new SendMessage();
+                        responseMessage.setChatId(getChatId(update));
+                        responseMessage.setText(responseText);
+
+                        AbstractKeyboard keyboardOne = new KeyboardWeather(userService);
+                        responseMessage = keyboardOne.addKeyboard(update, responseMessage);
+                        States.INSTANCE.setState(getChatId(update), AppState.WEATHER);
+
+                        return new ResponseEntity(responseMessage);
                     }
                 }
             }
@@ -60,8 +75,9 @@ public class ResponseGetWeatherImpl extends AbstractResponse {
         responseMessage.setChatId(getChatId(update));
         responseMessage.setText(responseText);
 
-        KeyboardOne keyboardOne = new KeyboardOne();
+        AbstractKeyboard keyboardOne = new KeyboardOne();
         responseMessage = keyboardOne.addKeyboard(update, responseMessage);
+        States.INSTANCE.setState(getChatId(update), AppState.IDLE);
 
         return new ResponseEntity(responseMessage);
     }

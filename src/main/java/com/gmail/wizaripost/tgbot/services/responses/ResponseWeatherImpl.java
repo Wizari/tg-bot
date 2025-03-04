@@ -34,8 +34,6 @@ public class ResponseWeatherImpl extends AbstractResponse {
 
         AbstractKeyboard keyboard = new KeyboardWeather(userService);
         responseMessage = (SendMessage) keyboard.addKeyboard(update, responseMessage);
-
-
         States.INSTANCE.setState(getChatId(update), AppState.WEATHER);
 
         return new ResponseEntity(responseMessage);
