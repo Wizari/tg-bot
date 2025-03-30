@@ -14,6 +14,11 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static com.gmail.wizaripost.tgbot.util.Utils.getChatId;
 
@@ -22,6 +27,7 @@ import static com.gmail.wizaripost.tgbot.util.Utils.getChatId;
 @PropertySource("classpath:secrets.properties")
 public class ConnectionLongPolling extends TelegramLongPollingBot {
 
+    private final ExecutorService executor = Executors.newFixedThreadPool(10);
 
     private final MainMessageController mainMessageController;
     @Value("${telegram.botName}")
@@ -39,12 +45,15 @@ public class ConnectionLongPolling extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         System.out.println("Получено обновление: " + update);
-//        System.out.println("getUser(update).getId() " + getUserId(update));
-//        System.out.println("getUser(update).getId() " + getChatId(update));
-        if (update.hasMessage() && update.getMessage().hasLocation()) {
-//            System.out.println("Получено сообщение2: " + update.getMessage().getLocation().toString());
-            System.out.println("getLatitude: " + update.getMessage().getLocation().getLatitude());
+        Mono.fromRunnable(() -> handleUpdate(update))
+                .subscribeOn(Schedulers.fromExecutor(executor))
+                .subscribe();
+    }
 
+
+    private void handleUpdate(Update update) {
+        if (update.hasMessage() && update.getMessage().hasLocation()) {
+            System.out.println("getLatitude: " + update.getMessage().getLocation().getLatitude());
 
             this.sendResponseToLocation(update);
         }
@@ -52,23 +61,15 @@ public class ConnectionLongPolling extends TelegramLongPollingBot {
         if (update.hasMessage() && update.getMessage().hasText()) {
             System.out.println("update.getMessage().getFrom().getId(): "
                     + update.getMessage().getFrom().getId());
-//            System.out.println("Получено сообщение2: "+
-//                    States.INSTANCE.getState().toString() +
-//                    update.getMessage().getText());
-//            System.out.println("Получено сообщение2: " + update.getMessage().getChatId());
-
 
             this.sendResponseToMessage(update);
         }
         if (update.hasCallbackQuery()) {
             System.out.println("callback: " + update.getCallbackQuery().getData());
-//            System.out.println("CallID " + update.getCallbackQuery().getFrom().getId());
-
 
             this.sendResponseToCallbackQuery(update);
         }
     }
-
 
     private void sendResponseToMessage(Update update) {
         try {
@@ -81,49 +82,34 @@ public class ConnectionLongPolling extends TelegramLongPollingBot {
             }
 
             if (responseEntity.getResponse() instanceof BotApiMethod) {
-                execute((BotApiMethod) responseEntity.getResponse());
+                myExecute((BotApiMethod) responseEntity.getResponse());
             }
             if (responseEntity.getResponse() instanceof SendPhoto) {
-                execute((SendPhoto) responseEntity.getResponse());
+                myExecute((SendPhoto) responseEntity.getResponse());
             }
             if (responseEntity.getResponse() instanceof SendMediaGroup) {
-                execute((SendMediaGroup) responseEntity.getResponse());
+                myExecute((SendMediaGroup) responseEntity.getResponse());
             }
             if (responseEntity.getResponse() instanceof EditMessageReplyMarkup) {
-                execute((EditMessageReplyMarkup) responseEntity.getResponse());
+                myExecute((EditMessageReplyMarkup) responseEntity.getResponse());
             }
-
-
-//            execute((SendMessage) responseEntity.getResponse());
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
     }
 
     private void sendResponseToCallbackQuery(Update update) {
-        try {
-            ResponseEntity responseEntity = mainMessageController.getReply(update,
-                    update.getCallbackQuery().getData());
+        ResponseEntity responseEntity = mainMessageController.getReply(update,
+                update.getCallbackQuery().getData());
 
-            if (responseEntity.getResponse() instanceof BotApiMethod) {
-                execute((BotApiMethod) responseEntity.getResponse());
-            }
-            if (responseEntity.getResponse() instanceof SendPhoto) {
-                execute((SendPhoto) responseEntity.getResponse());
-            }
-            if (responseEntity.getResponse() instanceof SendMediaGroup) {
-                execute((SendMediaGroup) responseEntity.getResponse());
-            }
-            if (update.getCallbackQuery().getData().equals("ОК")) {
-                System.out.println("\"ОК\" - " + update.getCallbackQuery().getData());
-                System.out.println("\"ОК\"");
-//                deleteRecord(chatId);
-            } else {
-                System.out.println(update.getCallbackQuery().getData());
-            }
-
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
+        if (responseEntity.getResponse() instanceof BotApiMethod) {
+            myExecute((BotApiMethod) responseEntity.getResponse());
+        }
+        if (responseEntity.getResponse() instanceof SendPhoto) {
+            myExecute((SendPhoto) responseEntity.getResponse());
+        }
+        if (responseEntity.getResponse() instanceof SendMediaGroup) {
+            myExecute((SendMediaGroup) responseEntity.getResponse());
         }
     }
 
@@ -135,9 +121,8 @@ public class ConnectionLongPolling extends TelegramLongPollingBot {
                 this.deleteMessage(update.getMessage().getChatId(),
                         update.getMessage().getMessageId());
             }
-
             if (responseEntity.getResponse() instanceof BotApiMethod) {
-                execute((BotApiMethod) responseEntity.getResponse());
+                myExecute((BotApiMethod) responseEntity.getResponse());
             }
 
         } catch (TelegramApiException e) {
@@ -154,6 +139,46 @@ public class ConnectionLongPolling extends TelegramLongPollingBot {
         DeleteMessage deleteMessage = new DeleteMessage();
         deleteMessage.setChatId(chatId.toString());
         deleteMessage.setMessageId(messageId);
-        execute(deleteMessage);
+        myExecute(deleteMessage);
     }
+
+    private void myExecute(BotApiMethod res) {
+        Mono.fromCallable(() -> execute(res))
+                .subscribeOn(Schedulers.boundedElastic()) // Блокирующий вызов в отдельном потоке
+                .subscribe(
+                        result -> {},
+                        error -> System.err.println("Error: " + error)
+                );
+    }
+
+    private void myExecute(SendPhoto res) {
+        System.out.println("myExecute");
+        Mono.fromCallable(() -> execute(res))
+                .subscribeOn(Schedulers.boundedElastic())
+                .subscribe(
+                        result -> {},
+                        error -> System.err.println("Error: " + error)
+                );
+    }
+
+    private void myExecute(SendMediaGroup res) {
+        System.out.println("myExecute");
+        Mono.fromCallable(() -> execute(res))
+                .subscribeOn(Schedulers.boundedElastic())
+                .subscribe(
+                        result -> {},
+                        error -> System.err.println("Error: " + error)
+                );
+    }
+
+    private void myExecute(EditMessageReplyMarkup res) {
+        System.out.println("myExecute");
+        Mono.fromCallable(() -> execute(res))
+                .subscribeOn(Schedulers.boundedElastic())
+                .subscribe(
+                        result -> {},
+                        error -> System.err.println("Error: " + error)
+                );
+    }
+
 }
